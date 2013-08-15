@@ -94,8 +94,7 @@ module Precious
     end
 
     get '/' do
-      page_dir = settings.wiki_options[:page_file_dir].to_s
-      redirect clean_url(::File.join(@base_url, page_dir, wiki_new.index_page))
+      show_page_or_file(wiki_new.index_page)
     end
 
     # path is set to name if path is nil.
@@ -440,6 +439,10 @@ module Precious
     end
 
     get '/*' do
+      if params[:splat].first == wiki_new.index_page
+        redirect to('/')
+        return
+      end
       show_page_or_file(params[:splat].first)
     end
 
